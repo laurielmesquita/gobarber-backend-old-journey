@@ -1,2 +1,3 @@
-# gobarber-back-end
+# GoBarber
+
 GoBarber back-end app
