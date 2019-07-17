@@ -12,7 +12,7 @@ class User extends Model {
         // Somente as colunas que serão inseridas pelo user
         name: Sequelize.STRING,
         email: Sequelize.STRING,
-        password_has: Sequelize.STRING,
+        password_hash: Sequelize.STRING,
         provider: Sequelize.BOOLEAN
       },
       // Aqui é o segundo parâmetro com o objeto sequelize

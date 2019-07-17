@@ -1,6 +1,8 @@
 import express from 'express'
 import routes from './routes'
 
+import './database'
+
 class App {
   // Method automatically called to instance this class
   constructor () {
