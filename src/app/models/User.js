@@ -34,6 +34,13 @@ class User extends Model {
     // Retorna o módulo que acabou de ser inicializado
     return this
   }
+
+  // Método para comparar senhas
+  checkPassword (password) {
+    // Se as senhas forem iguais o bcrypt.compare
+    // vai retornar true, senão retorna false
+    return bcrypt.compare(password, this.password_hash)
+  }
 }
 
 export default User
