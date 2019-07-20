@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import * as Yup from 'yup'
 
 import User from '../models/User'
 import authConfig from '../../config/auth'
@@ -6,6 +7,17 @@ import authConfig from '../../config/auth'
 class SessionControler {
   // Método para a criação da nossa sessão
   async store (req, res) {
+    const schema = Yup.object().shape({
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string().required()
+    })
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails!' })
+    }
+
     // Vamos pegar email e senha que o
     // usuário passa ao se autenticar
     const { email, password } = req.body
@@ -21,7 +33,7 @@ class SessionControler {
 
     // Verificar se as duas senhas conferem
     if (!(await user.checkPassword(password))) {
-      return res.status(400).json({ error: 'Password does not match!' })
+      return res.status(401).json({ error: 'Password does not match!' })
     }
 
     // Se chegou até aqui as duas checagens passram
