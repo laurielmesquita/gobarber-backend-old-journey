@@ -28,8 +28,28 @@ class UserController {
     // Não faz sentido essa rota estar disponível
     // para quem não está logado no sistema
 
-    console.log(req.userId)
-    return res.json({ Ok: true })
+    // Pegando email e senha antiga do
+    // usuário pelo corpo da requisição
+    const { email, oldPassword } = req.body
+
+    // Identificando qual o usuário pelo Id dentro da requisição
+    const user = await User.findByPk(req.userId)
+
+    if (email !== user.email) {
+      const userExists = await User.findOne({ where: { email } })
+
+      if (userExists) {
+        return res.status(400).json({ error: 'User already exists!' })
+      }
+    }
+
+    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+      return res.status(400).json({ error: 'Password does not match!' })
+    }
+
+    const { id, name, provider } = await user.update(req.body)
+
+    return res.json({ id, name, email, provider })
   }
 }
 
