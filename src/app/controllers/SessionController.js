@@ -40,7 +40,7 @@ class SessionControler {
       //
       // 2) O segundo parâmetro desse objeto precisa ser
       // uma string de valor único em toda a aplicação
-      // e que só a gente tenha acesso
+      // e que só a gente tenha acesso (https://www.md5online.org)
       //
       // 3) No terceiro parâmetro podemos passar algumas
       // configurações para o nosso token
