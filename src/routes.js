@@ -1,13 +1,15 @@
 // Import only routes of Express
 import { Router } from 'express'
+import multer from 'multer'
+import multerConfig from './config/multer'
 
 import UserController from './app/controllers/UserController'
 import SessionController from './app/controllers/SessionController'
 
 import authMiddleware from './app/middlewares/auth'
 
-// We'll work only the routes here
 const routes = new Router()
+const upload = multer(multerConfig)
 
 // Methods of routes
 routes.post('/users', UserController.store)
@@ -19,5 +21,11 @@ routes.post('/sessions', SessionController.store)
 routes.use(authMiddleware)
 
 routes.put('/users', UserController.update)
+
+// Rota files com upload de apenas um arquivo por vez
+// O nome do campo que vamos enviar dentro da requisição file
+routes.post('/files', upload.single('file'), (req, res) => {
+  return res.json({ ok: true })
+})
 
 export default routes
