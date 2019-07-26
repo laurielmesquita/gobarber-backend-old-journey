@@ -35,6 +35,15 @@ class User extends Model {
     return this
   }
 
+  // Método estático de associação que recebe todos os models
+  static associate (models) {
+    // Aqui informamos que o model de usuário pertence ao model de file
+    // Isso quer dizer que eu vou ter um arquivo de id sendo guardado
+    // dentro do meu modo de usuário passando o nome da coluna que vai
+    // armazenar a referencia do arquivo, que é avatar_id
+    this.belongsTo(models.File, { foreignKey: 'avatar_id' })
+  }
+
   // Método para comparar senhas
   checkPassword (password) {
     // Se as senhas forem iguais o bcrypt.compare

@@ -5,9 +5,10 @@ import Sequelize from 'sequelize'
 import databaseConfig from '../config/database'
 
 import User from '../app/models/User'
+import File from '../app/models/File'
 
 // Array com os models da aplicação
-const models = [User]
+const models = [User, File]
 
 class Database {
   // Method constructor
@@ -25,7 +26,15 @@ class Database {
 
     // Vamos percorrer o array com os models
     // chamando o init() para connection
-    models.map(model => model.init(this.connection))
+    models
+      .map(model => model.init(this.connection))
+      // Esse segundo map vai percorrer novamente os models
+      // chamando para cada um dos models o método associate.
+      // Só vamos executar esse método associate se ele existir no model.
+      // Para tal, vamos criar uma condição com && que vai fazer com que
+      // toda a parte que vem depois só seja executada se a parte
+      // anterior for verdadeira.
+      .map(model => model.associate && model.associate(this.connection.models))
   }
 }
 
