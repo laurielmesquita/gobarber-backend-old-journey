@@ -11,7 +11,15 @@ class File extends Model {
         // Vamos enviar as colunas da nossa base de dados
         // Somente as colunas que serão inseridas pelo user
         name: Sequelize.STRING,
-        path: Sequelize.STRING
+        path: Sequelize.STRING,
+        url: {
+          type: Sequelize.VIRTUAL,
+          // Aqui vamos definir o método GET
+          // que é como vamos formatar esse valor
+          get () {
+            return `http://localhost:3333/files/${this.path}`
+          }
+        }
       },
       // Aqui é o segundo parâmetro com o objeto sequelize
       // Aqui também poderia passar mais configurações

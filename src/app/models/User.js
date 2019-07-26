@@ -41,7 +41,8 @@ class User extends Model {
     // Isso quer dizer que eu vou ter um arquivo de id sendo guardado
     // dentro do meu modo de usuário passando o nome da coluna que vai
     // armazenar a referencia do arquivo, que é avatar_id
-    this.belongsTo(models.File, { foreignKey: 'avatar_id' })
+    // Em as: 'avatar', estamos passando um codinome para esse relacionamento
+    this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' })
   }
 
   // Método para comparar senhas

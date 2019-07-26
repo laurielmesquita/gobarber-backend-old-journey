@@ -1,4 +1,5 @@
 import express from 'express'
+import path from 'path'
 import routes from './routes'
 
 import './database'
@@ -17,6 +18,12 @@ class App {
   middlewares () {
     // Send requisitions and receive responses on JSON format from our API
     this.server.use(express.json())
+    // Vamos chamar o express.static para servir
+    // arquivos estáticos e a imagem ser exibida
+    this.server.use(
+      '/files',
+      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
+    )
   }
 
   // Method routes
