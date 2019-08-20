@@ -27,6 +27,7 @@ routes.put('/users', UserController.update)
 
 routes.get('/providers', ProviderController.index)
 
+routes.get('/appointments', AppointmentController.index)
 routes.post('/appointments', AppointmentController.store)
 
 // Rota files com upload de apenas um arquivo por vez

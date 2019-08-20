@@ -1,9 +1,51 @@
 import * as Yup from 'yup'
 import { startOfHour, parseISO, isBefore } from 'date-fns'
 import User from '../models/User'
+import File from '../models/File'
 import Appointment from '../models/Appointment'
 
 class AppointmentController {
+  async index (req, res) {
+    const appointments = await Appointment.findAll({
+      // Aqui vamos listar apenas os usuários que forem igual a req.userId
+      // e o cancelamento for null, ou seja, que nao foram cancelados ainda
+      where: {
+        user_id: req.userId,
+        canceled_at: null
+      },
+      // Aqui vamos configurar a ordem dessa listagem por data
+      order: ['date'],
+      // Aqui vamos especificar quais atributos do agendamento queremos informar
+      attributes: ['id', 'date'],
+      // Eu também quero listar os dados do prestador de serviço
+      include: [
+        {
+          // O modelo de relacionamento será o de User
+          model: User,
+          // Porém o Appointment.js relaciona o User duas vezes e será preciso
+          // passar também o as: 'provider' para dizer qual relacionamento será
+          as: 'provider',
+          // Aqui vamos especificar quais atributos do provider queremos informar
+          attributes: ['id', 'name'],
+          // Vamos dá mais um include, que é um array, para informar o avatar do
+          // usuário
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              // Nos atributos do avatar é IMPORTANTE incluir o PATH
+              // pois o File não saberá qual é o arquivo a ser carregado
+              attributes: ['id', 'path', 'url']
+            }
+          ]
+        }
+      ]
+    })
+
+    // Agora retornamos isso como appointments
+    return res.json(appointments)
+  }
+
   async store (req, res) {
     const schema = Yup.object().shape({
       provider_id: Yup.number().required(),
@@ -53,7 +95,9 @@ class AppointmentController {
     })
 
     if (checkAvailability) {
-      return res.status(400).json({ error: 'Appointment date is not available!' })
+      return res
+        .status(400)
+        .json({ error: 'Appointment date is not available!' })
     }
 
     // Agora vamos criar o agendamento
