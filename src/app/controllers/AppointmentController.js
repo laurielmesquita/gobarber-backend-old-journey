@@ -6,6 +6,9 @@ import Appointment from '../models/Appointment'
 
 class AppointmentController {
   async index (req, res) {
+    // Passando o parâmetro e definindo um valor default para ele page = 1
+    const { page = 1 } = req.query
+
     const appointments = await Appointment.findAll({
       // Aqui vamos listar apenas os usuários que forem igual a req.userId
       // e o cancelamento for null, ou seja, que nao foram cancelados ainda
@@ -17,6 +20,10 @@ class AppointmentController {
       order: ['date'],
       // Aqui vamos especificar quais atributos do agendamento queremos informar
       attributes: ['id', 'date'],
+      // Limites de agendamentos listados por página
+      limit: 20,
+      // Números de registros que eu quero pular para mostrar os da próxima page
+      offset: (page - 1) * 20,
       // Eu também quero listar os dados do prestador de serviço
       include: [
         {
