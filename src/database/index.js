@@ -1,5 +1,6 @@
 // IMPORT QUE VAI FAZER A CONEXÃO COM O BANCO
 import Sequelize from 'sequelize'
+import mongoose from 'mongoose'
 
 // Importando as configurações do bando de dados
 import databaseConfig from '../config/database'
@@ -16,6 +17,7 @@ class Database {
   constructor () {
     // Chamando o método init()
     this.init()
+    this.mongo()
   }
 
   // Método init() que faz a conexão com a base de dados
@@ -36,6 +38,24 @@ class Database {
       // toda a parte que vem depois só seja executada se a parte
       // anterior for verdadeira.
       .map(model => model.associate && model.associate(this.connection.models))
+  }
+
+  mongo () {
+    this.mongoConnection = mongoose.connect(
+      // Aqui dentro eu preciso passar a url de conexão do mongo
+      // Não tendo user e senha (já que o docker run padrão do mongo não gera)
+      // eu posso passar diretamente qual será o host
+      'mongodb://localhost:27017/gobarber',
+      // Agora vamos passar um objeto com algumas configurações adicionais
+      {
+        // Porque estamos utilizando um formato de url do mongo um pouco mais
+        // novo que o formato utilizado até pouco tempo
+        useNewUrlParser: true,
+        // Essa é uma configuração do mongo para a forma que vamos encontrar e
+        // modificar registros
+        useFindAndModify: true
+      }
+    )
   }
 }
 
