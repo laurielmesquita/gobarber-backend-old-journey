@@ -118,7 +118,7 @@ class AppointmentController {
       // Vamos passar também o provider_id direto do req.body
       provider_id,
       // E o último campo será o date
-      date
+      date: hourStart
     })
 
     // Notificação de agendamento do prestador
