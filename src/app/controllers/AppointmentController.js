@@ -71,15 +71,15 @@ class AppointmentController {
     // Checar se o provider_id é um provider
     // Vamos criar uma constante para encontrar um registro
     // com where e dentro desse where as condições
-    const isProvider = await User.findOne({
+    const checkIsProvider = await User.findOne({
       // As condição são:
       // Encontrar um provider_id onde provider seja true
       where: { id: provider_id, provider: true }
     })
 
-    // Se isProvider não encontrar nenhum usuário
+    // Se checkIsProvider não encontrar nenhum usuário
     // vamos apresentar um aviso de erro
-    if (!isProvider) {
+    if (!checkIsProvider) {
       return res
         .status(401)
         .json({ error: 'You can only create appointments with providers!' })
@@ -124,12 +124,16 @@ class AppointmentController {
     // Notificação de agendamento do prestador
     // Aqui vamos obter o nome do usuário
     const user = await User.findByPk(req.userId)
-    const formatteDate = format(hourStart, "'dia' dd 'de' MMMM', às' H:mm'h'", {
-      locale: pt
-    })
+    const formattedDate = format(
+      hourStart,
+      "'dia' dd 'de' MMMM', às' H:mm'h'",
+      {
+        locale: pt
+      }
+    )
 
     await Notification.create({
-      content: `Novo agendamento de ${user.name} para ${formatteDate}`,
+      content: `Novo agendamento de ${user.name} para ${formattedDate}`,
       user: provider_id
     })
 
