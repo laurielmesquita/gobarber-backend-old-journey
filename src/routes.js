@@ -35,6 +35,7 @@ routes.post('/appointments', AppointmentController.store)
 routes.get('/schedule', ScheduleController.index)
 
 routes.get('/notifications', NotificationController.index)
+routes.put('/notifications/:id', NotificationController.update)
 
 // Rota files com upload de apenas um arquivo por vez
 // O nome do campo que vamos enviar dentro da requisição file
