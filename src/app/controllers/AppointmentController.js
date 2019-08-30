@@ -24,7 +24,7 @@ class AppointmentController {
       // Aqui vamos configurar a ordem dessa listagem por data
       order: ['date'],
       // Aqui vamos especificar quais atributos do agendamento queremos informar
-      attributes: ['id', 'date'],
+      attributes: ['id', 'date', 'past', 'cancelable'],
       // Limites de agendamentos listados por página
       limit: 20,
       // Números de registros que eu quero pular para mostrar os da próxima page
