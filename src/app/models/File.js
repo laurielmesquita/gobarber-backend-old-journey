@@ -17,7 +17,7 @@ class File extends Model {
           // Aqui vamos definir o método GET
           // que é como vamos formatar esse valor
           get () {
-            return `http://localhost:3333/files/${this.path}`
+            return `${process.env.APP_URL}/files/${this.path}`
           }
         }
       },

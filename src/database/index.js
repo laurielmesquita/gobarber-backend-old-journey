@@ -45,7 +45,7 @@ class Database {
       // Aqui dentro eu preciso passar a url de conexão do mongo
       // Não tendo user e senha (já que o docker run padrão do mongo não gera)
       // eu posso passar diretamente qual será o host
-      'mongodb://localhost:27017/gobarber',
+      process.env.MONGO_URL,
       // Agora vamos passar um objeto com algumas configurações adicionais
       {
         // Porque estamos utilizando um formato de url do mongo um pouco mais
